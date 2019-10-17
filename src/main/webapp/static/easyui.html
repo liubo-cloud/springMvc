@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+<meta http-equiv="description" content="this is my page">
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>this is page</title>
+<script type="text/javascript" src="/js/jquery.min.js"></script>
+<script type="text/javascript" src="/js/jquery.easyui.min.js"></script>
+<link rel="stylesheet" type="text/css" href="/css/easyui.css">
+<link rel="stylesheet" type="text/css" href="/css/icon.css">
+<style type="text/css">
+   	body{
+   		font-size:14px;
+   	}
+    
+</style>
+</head>
+<body>
+	员工姓名：<input id="empid" class="easyui-textbox" type="text" name="empname" data-options="required:true"></input>
+	        <a href="javascript:void(0)" style="width: 50px" class="easyui-linkbutton" onclick="queryForm()">查询</a>
+			<div style="height: 5px"></div>
+				<table id="dg" class="easyui-datagrid" title="员工信息" style="width: 600px; height: 250px" iconCls="icon-save" pagination="true" pagination="true" toolbar="#td" data-options="height:'auto',singleSelect:false,collapsible:true,url:'queryEmp',method:'get',pagination:true,rownumbers:true">
+					<thead>
+						<tr>
+							<!-- {"empno":1,"ename":"龙大胖","job":"鸭子","mgr":345,"hiredate":1118246400000,"sal":2324,"deptno":20}, -->
+							<th field="ck" checkbox="true"></th>
+							<th data-options="field:'empno',width:80">员工编号</th>
+							<th data-options="field:'ename',width:100">员工姓名</th>
+							<th data-options="field:'job',width:80,align:'right'">工种</th>
+							<th data-options="field:'hiredate',width:120,align:'right',formatter:dataFormatter">入职日期</th>
+							<th data-options="field:'sal',width:80">薪水</th>
+							<th data-options="field:'deptno',width:60,align:'center',formatter:sexFormatter">性别</th>
+						</tr>
+					</thead>
+				</table>
+
+			<!-- 修改的div -->
+			<div id="w" class="easyui-window" title="修改员工信息" data-options="iconCls:'icon-save',closed:true" style="width: 500px; height: 300px; padding: 5px;">
+				<form id="ff" method="post">
+					<input type="hidden" name="_method" value="put">
+					<table cellpadding="5">
+						<tr>
+							<td>员工姓名:</td>
+							<td><input class="easyui-textbox" type="text" name="ename" data-options="required:true"></input></td>
+						</tr>
+						<tr>
+							<td>工    种:</td>
+							<td><input class="easyui-textbox" type="text" name="job" data-options="required:true"></input></td>
+						</tr>
+						<tr>
+							<td>入职日期:</td>
+							<td><input class="easyui-datebox" type="text" name="hiredate" data-options="required:true"></input></td>
+						</tr>
+						<tr>
+							<td>薪    水:</td>
+							<td><input class="easyui-textbox" type="text" name="sal" data-options="required:true"></input></td>
+						</tr>
+						<tr>
+							<td>性    别:</td>
+							<td><select class="easyui-combobox" name="deptno" style="width: 50px">
+									<option value="1">男</option>
+									<option value="0">女</option>
+							</select></td>
+						</tr>
+					</table>
+				</form>
+				<div style="text-align: center; padding: 5px">
+					<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitUpdateForm()">保存</a> 
+					<a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearUpdateForm()">重置</a>
+				</div>
+			</div>
+
+			<!-- 新增的div -->
+			<div id="z" class="easyui-window" title="增加员工信息" data-options="iconCls:'icon-save',closed:true" style="width: 500px; height: 300px; padding: 5px;">
+				<form id="zz" method="post">
+					<table cellpadding="5">
+						<tr>
+							<td>员工姓名:</td>
+							<td><input class="easyui-textbox" type="text" name="ename"></input></td>
+						</tr>
+						<tr>
+							<td>工    种:</td>
+							<td><input class="easyui-textbox" type="text" name="job" data-options="required:true"></input></td>
+						</tr>
+		
+						<tr>
+							<td>薪    水:</td>
+							<td><input class="easyui-textbox" type="text" name="sal" data-options="required:true"></input></td>
+						</tr>
+						<tr>
+							<td>入职日期:</td>
+							<td><input class="easyui-datebox" type="text" name="hiredate" data-options="required:true"></input></td>
+						</tr>
+		
+						<tr>
+							<td>性    别:</td>
+							<td><select class="easyui-combobox" name="deptno" style="width: 50px">
+									<option value="1">男</option>
+									<option value="0">女</option>
+							</select></td>
+						</tr>
+		
+					</table>
+				</form>
+				<div style="text-align: center; padding: 5px">
+					<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitinsertForm()">保存</a> 
+					<a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearinsertForm()">重置</a>
+				</div>
+			</div>
+			
+			<!-- 文件上传 -->
+			<div>
+				<form id="zzz" method="post" enctype="multipart/form-data">
+					<table>
+						<tr>
+						<td>员工详细信息:</td>
+						<td><input class="easyui-filebox" name="file" data-options="prompt:'请选择文件',buttonText:'选择文件'" style="width:100%"></td>
+					</tr>
+					</table>
+				</form>
+			</div>
+
+	<!-- 
+	EasyUi所有方法的调用    控件对象.控件名称('方法名', '方法参数')
+	例如：$('#id').datagrid('load', {ename:name1});
+      -->
+	<script type="text/javascript">
+		//重写时间框
+		$.fn.datebox.defaults.formatter = function(date) {
+			var y = date.getFullYear();
+			var m = date.getMonth() + 1;
+			var d = date.getDate();
+			return y + '-' + m + '-' + d;
+		}
+
+		/*
+			value：字段值。
+			rowData：行记录数据。
+			rowIndex: 行索引。 
+		 */
+		//从数据库中获取一个标记  在前台展示是要展示标记所代表的含义
+		function sexFormatter(value, row, index) {
+			if (value == 1) {
+				return '男';
+			} else {
+				return '女';
+			}
+
+		}
+
+		//时间戳的转换
+		function dataFormatter(value, row, index) {
+			var da = value;
+			da = new Date(da);
+			var year = da.getFullYear() + '年';
+			var month = da.getMonth() + 1 + '月';
+			var date = da.getDate() + '日';
+			return ([ year, month, date ].join('-'));
+		}
+
+		//修改清除
+		function clearUpdateForm() {
+			$('#ff').form('clear');
+		}
+
+		//新增清除
+		function clearinsertForm() {
+			$('#zz').form('clear');
+		}
+
+		//查询触发的函数
+		function queryForm() {
+			//获取的是jQuery对象  要是用jQuery的方法获取值 
+			//$("input[name='empname']").val(); 
+			//使用easyUI的方法获取值
+			var empname = $("#empid").textbox('getValue');
+
+			//解决后台获取数据乱码问题
+			var name1 = encodeURI(empname);
+			//这个查询方式=====通过#dg===queryEmp?ename=empname
+			$('#dg').datagrid('load', {
+				//======easyui所有的方法调用   控件对象.控件名称('方法名','方法参数')
+				ename : name1
+			});
+		}
+
+		//修改的方法
+		function submitUpdateForm() {
+			//获取选中行的所有信息 以便下面发起请求获取数据id
+			var selectedRow = $("#dg").datagrid("getSelected");
+			//表单提交 会获取表单的所有信息
+			$('#ff').form('submit', {
+				url : 'updateEmp/' + selectedRow.empno, //selectedRow.empno 获取选中行的数据id
+				success : function(msg) {
+					msg = JSON.parse(msg);
+					if (msg.code == 1) {
+						queryForm()
+						$.messager.alert('提示消息', '修改成功');//弹框
+						$("#w").window('close');
+					} else {
+						$.message.alert('错误消息', msg.message);
+					}
+				}
+			});
+		}
+
+		//新增的方法
+		function submitinsertForm() {
+			$('#zz').form('submit', {
+				url : 'saveEmp',
+				success : function(msg) {
+					msg = JSON.parse(msg);
+					if (msg.code == 1) {
+						queryForm()
+						$.messager.alert('提示消息', '新增成功');
+						$("#z").window('close');
+					} else {
+						$.messager.alert('错误消息', msg.message);
+					}
+				}
+			})
+		}
+
+		//添加toolbar工具栏
+		$(function() {
+			$("#dg").datagrid({
+				toolbar : [ {
+					iconCls : 'icon-insert',
+					text : '新增',
+					//点击新增弹出一个新增的div窗口
+					onClick : function() {
+						$("#z").window('open');
+					}
+				}, {
+					iconCls : 'icon-edit',
+					text : '修改',
+					onClick : function() {
+						var selectedRow = $("#dg").datagrid("getSelected");
+						if (selectedRow == null) {
+							$.messager.alert('提示消息', '请选择数据');
+							return;
+						}
+						$("#w").window('open');
+						//带上原数据
+						$("#ff").form('load', selectedRow)
+					}
+				}, {
+					iconCls : 'icon-remove',
+					text : '删除',
+					onClick : function() {
+
+						var selectedRow = $("#dg").datagrid("getSelections");
+						if (selectedRow == null) {
+							$.messager.alert('提示消息', '请选择数据');
+							return;
+						}
+						var falg;
+						for (var i = 0; i < selectedRow.length; i++) {
+							if (i == 0) {
+								falg = (selectedRow[i].empno);
+							} else {
+								falg += "," + selectedRow[i].empno;
+							}
+						}
+
+						//var sid=selectedRow.empno;
+						$.ajax({
+							url : 'deleteEmp/' + falg,
+							method : 'POST',
+							dataType : 'json',
+							data : '_method=delete',
+							success : function(msg) {
+								if (msg.code == 1) {
+									queryForm()
+									$.messager.alert('提示消息', '删除成功');
+								} else {
+									$.messager.alert('错误消息', msg.message);
+								}
+							}
+						});
+					}
+				} ]
+			});
+		});
+	</script>
+</body>
+</html>

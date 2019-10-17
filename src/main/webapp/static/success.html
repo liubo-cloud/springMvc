@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>成功页面</title>
+    <script type="text/javascript" src="/js/handlebars.js"></script>
+    <script type="text/javascript" src="/js/jquery.js"></script>
+    <script type="text/javascript" src="/js/Rose.src.js"></script>
+    <script type="text/javascript" src="/js/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <link href="../css/style.css" rel="stylesheet" type="text/css">
+    <style>
+        .divleft{
+            font-size: 25px;
+            margin-left: 80px;
+        }
+        #queryCondition{
+            margin-right: 180px;
+            width: 900px;
+        }
+        #billId{
+            height: 19px;
+            border-radius: 3px 4px 5px 6px;
+        }
+        .queryUserInfo{
+            width: 70px;
+            height: 35px;
+            border-radius: 3px 4px 5px 6px;
+            margin-left: 15px;
+            margin-top: 5px;
+        }
+        .userInfo{
+            width: 150px;
+            height: 30px;
+            border-radius: 3px 4px 5px 6px;
+            float: left;
+            margin-top: 5px;
+        }
+
+    </style>
+</head>
+<body>
+<ul id="jump">
+    <li ><a id="top" href="#top"></a><img src="/images/top.png" /></li>
+    <li><a id="sina" href="http://weibo.com/jsfoot" target="_blank"></a></li>
+    <li>
+        <a id="weixin" href="javascript:void(0)" onmouseover="showEWM()" onmouseout="hideEWM()">
+            <div id="EWM"><img src="../static/weixin_code.jpg" /></div>
+        </a>
+    </li>
+    <li><a id="ceping" href="" target="_blank"></a></li>
+    <li><a id="share" href="" target="_blank"></a></li>
+    <li><a id="reply" href="" target="_blank"></a></li>
+    <li><a id="downloadFile"></a></li>
+</ul>
+
+<div>
+<div style="background: burlywood;float: left;width: 250px;margin-left: -1px;height: 600px" class="divleft">
+    <input type="text" class="userInfo" id="userInfo" value="请输入您的帐号" onFocus="if(value=='请输入您的帐号') {value=''}" onBlur="if(value==''){value='请输入您的帐号'}"/><button id="queryUserInfo" class="queryUserInfo">查询</button>
+    <div class="result0" id="result0">
+
+    </div>
+
+</div>
+
+    <!--结果表头区域-->
+    <div class="window-div" id="window-div1" style="display: none;">
+        <table class="window-table" id="window-table1">
+            <thead>
+            <tr class="window-tr1" id="window-tr11">
+                <th class="window-th1" style=" border-bottom:1px solid #dedede;">序号</th>
+                <th class="window-th2" style=" border-bottom:1px solid #dedede;">名字</th>
+            </tr>
+            </thead>
+
+            <tbody class="window-tbody" id="result1">
+
+            </tbody>
+        </table>
+    </div>
+
+<div class="queryCondition" id="queryCondition" style="background: azure;float: right">
+    <!-- 查询区域 -->
+    <div id="queryCond" style="background: aquamarine;width: 50px;width: 900px;">
+        <table style="width:900px;">
+            <tbody>
+            <tr>
+                <th>计费号码：</th>
+                <td>
+                    <input type="text" id="billId" class="text" value="" />
+                </td>
+                <th>状态：</th>
+                <td>
+                    <select id="posState" style="width: 100px;height: 27px;border-radius: 3px 4px 5px 6px;">
+                        <option value="0">未打印</option>
+                        <option value="1">已打印</option>
+                        <option value="2">可打印</option>
+                    </select>
+                </td>
+                <th>
+                    <button id="queryButton" class="ui-button ui-button-lblue" style="margin-left: 90px;width: 60px;height: 25px;">查询</button>
+                </th>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <!--结果表头区域-->
+    <div class="window-div" id="window-div" style="height: 550px">
+        <table class="window-table" id="window-table" style="width: 900px;">
+            <thead>
+            <tr class="window-tr1" id="window-tr1">
+                <th class="window-th1" style=" border-bottom:1px solid #dedede;">序号</th>
+                <th class="window-th2" style=" border-bottom:1px solid #dedede;">名字</th>
+            </tr>
+            </thead>
+
+            <tbody class="window-tbody" id="result">
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</div>
+
+<ul id="menu" style="margin-left: 30px;">
+    <li style="float: left;font-size: 16px;border-right: 2px solid #1D19A2;margin-left: 400px;width: 45px;"><a href="http://www.baidu.com" target="_blank">百度</a></li>
+    <li style="float: left;font-size: 16px;border-right: 2px solid #1D19A2;margin-left: 20px;width: 80px;"><a href="http://www.Code52.Net" target="_blank">下载文件</a></li>
+    <li style="float: left;font-size: 16px;margin-left: 20px;"><a href="http://www.Code52.Net" target="_blank">关于我们</a></li>
+</ul>
+
+</body>
+
+<script type="text/x-handlebars-template" id="result-temp0">
+    {{#each this }}
+    <tr fieldset="arrayItem">
+        <td style="width:10%; border-bottom:1px solid #dedede;text-align: center;" class="result-temp0">{{{ID}}}</td>
+        <td style="width:10%; border-bottom:1px solid #dedede;text-align: center;" class="result-temp0">{{{NAME}}}</td>
+    </tr>
+    {{/each}}
+</script>
+
+<script type="text/javascript">
+// 初始化
+/*$(function () {
+    // 右下角浮动框形式展示
+    $.messager.show({
+        title : '畅销机型',
+        msg : '您还有未完成的工单 10 条',
+        timeout : 30000,
+        showType : 'slide',
+        width : 500,
+        height : 300
+    });
+});*/
+// 右侧栏
+    $(function(){
+
+        $(window).scroll(function() {
+            if ($(window).scrollTop() > 300) {
+                $('#jump li:eq(0)').fadeIn(800);
+            } else {
+                $('#jump li:eq(0)').fadeOut(800);
+            }
+        });
+
+        $("#top").click(function() {
+            $('body,html').animate({
+                    scrollTop: 0
+                },
+                1000);
+            return false;
+        });
+
+        $("#downloadFile").click(function () {
+            downloadFile();
+        })
+    });
+// 查询
+$("#queryButton").on("click", function () {
+        var billId = $("#billId").val();
+        var posState = $("#posState").val();
+        if (billId == ""){
+           alert("手机号码不能为空！");
+           return false;
+        }
+        if (posState == ""){
+           alert("状态不能为空！");
+           return false;
+        }
+        var cmd = {"billId":billId, "posState":posState};
+        // 写一个ajax请求吧
+        $.ajax({
+            url: "/user/query",
+            type:"POST",
+            data: cmd,
+            //cache: false,
+            // json格式数据
+            //contentType: "application/json; charset=utf-8",
+            // 默认格式数据
+            //contentType: "contentType: application/x-www-form-urlencoded",
+            dataType: "json",
+            success: function(json) {
+                var template = Handlebars.compile($("#result-temp0").html());
+                $("#result").html(template(json));
+            },
+            error:function(e){
+                alert("请求失败");
+            }
+        });
+    });
+
+// 查询客户信息
+    $("#queryUserInfo").click(function () {
+        var userInfo = $("#userInfo").val();
+        if(userInfo == "" || userInfo == '请输入您的帐号'){
+            alert("请输入您的账号！");
+            return false;
+        }
+        var cmd = {"billId":userInfo};
+        $.ajax({
+            url: "/user/query0",
+            type:"POST",
+            data: cmd,
+            //cache: false,
+            // json格式数据
+            //contentType: "application/json; charset=utf-8",
+            // 默认格式数据
+            //contentType: "contentType: application/x-www-form-urlencoded",
+            dataType: "json",
+            success: function(json) {
+                /*var template = Handlebars.compile($("#result00").html());
+                $("#result0").html(template(json));*/
+                var html = "";
+                html += ('<br><span width="20%" style="font-size: 20px;">姓名：'+json[0].USER_NAME+'</span><br><br>');
+                html += ('<span width="20%" style="font-size: 20px;">年龄：'+json[0].USER_AGE+'</span><br><br>');
+                html += ('<span width="20%" style="font-size: 20px;">性别：'+json[0].USER_SEX+'</span><br><br>');
+                html += ('<span width="20%" style="font-size: 20px;">手机号码：'+json[0].USER_PHONE+'</span><br><br>');
+                html += ('<span width="20%" style="font-size: 20px;">地址：'+json[0].USER_ADDRESS+'</span><br><br>');
+                $(".divleft").append(html);
+            },
+            error:function(e){
+                alert("请求失败");
+            }
+        });
+
+    })
+</script>
+
+<script type="text/javascript">
+    function showEWM(){
+        document.getElementById("EWM").style.display = 'block';
+    }
+    function hideEWM(){
+        document.getElementById("EWM").style.display = 'none';
+    }
+</script>
+<script type="text/javascript">
+    //ajax 文件下载，实际上就是模拟表单提交，代码如下：
+function download(url, data, method){
+    if( url && data ){
+        data = typeof data =='string' ? data : $.param(data);
+        var inputs = '';
+        $.each(data.split('&'), function(){
+            var pair = this.split('=');
+            inputs += '<input type="hidden" name="'+ pair[0]+'" value="'+ pair[1]+'" />';
+        });
+        $('<form action="'+ url +'" method="' + (method || 'post')+'">'+inputs+'</form>')
+            .appendTo('body').submit().remove();
+    };
+
+};
+
+// form表单提交下载文件
+function downloadFile(){
+        var $eleForm = $("<form method='get'></form>");
+
+        $eleForm.attr("action","https://codeload.github.com/douban/douban-client/legacy.zip/master");
+
+        $(document.body).append($eleForm);
+
+        //提交表单，实现下载
+        $eleForm.submit();
+    };
+</script>
+</html>

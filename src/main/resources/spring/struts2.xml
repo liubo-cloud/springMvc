@@ -1,0 +1,21 @@
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd" >
+<struts>
+    <package name="default" namespace="/" extends="struts-default">
+        <!-- 实现Action的配置-->
+        <!--<action name="queryUser" class="com.spring.demo.QueryUserAction">
+            <result name="success">/struts2/welcome.jsp</result>
+            <result name="error">/struts2/fail.jsp</result>
+        </action>-->
+        <!--不实现Action的配置-->
+        <action name="queryUsers" class="com.spring.demo.QueryUserActions" method="queryUsers">
+            <result name="success">/struts2/welcome.jsp</result>
+            <result name="error">/struts2/fail.jsp</result>
+        </action>
+
+    </package>
+    <!-- Add packages here -->
+</struts>

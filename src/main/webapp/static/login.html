@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+    <title>登录首页</title>
+    <!--应用js区域-->
+    <script type="text/javascript" src="/js/artDialog.js"></script>
+    <script type="text/javascript" src="/js/handlebars.js"></script>
+    <script type="text/javascript" src="/js/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="/js/jquery.js"></script>
+    <script type="text/javascript" src="/js/Rose.src.js"></script>
+    <!--样式区域-->
+    <style>
+        .window-body {
+            width: 300px;
+            height: 300px;
+            margin-right: 150px;
+            margin-top: 150px;
+            border-radius:3px 4px 5px 6px;
+        }
+        .userNameSpan{
+            font-weight: bold;
+        }
+        .userName{
+            margin-top: 70px;
+            height: 20px;
+            border-radius:3px 4px 5px 6px;
+        }
+        .passwordSpan{
+            font-weight: bold;
+        }
+        .password{
+            margin-left: 16px;
+            height: 20px;
+            border-radius:3px 4px 5px 6px;
+        }
+        .button{
+            height: 30px;
+            width: 130px;
+            font-size: 15px;
+            margin-left: 90px;
+            margin-top: 50px;
+        }
+        .div1{
+            width: 600px;
+            height: 300px;
+            margin-top: 150px;
+            border-radius:3px 4px 5px 6px;
+            margin-left: 50px;
+        }
+    </style>
+</head>
+<body style="background: #95B8E7">
+<!--form表单提交 -->
+<form id="UserController" method="post" action="/user/index">
+    <div style="background: steelblue;float: left" class="div1">
+        <span style="font-style: revert;font-size: 30px;margin-left: 200px;    text-align: center; line-height: 300px;">欢迎登录</span>
+    </div>
+
+    <div class="window-body" style="background: antiquewhite;float: right">
+            <span class="userNameSpan">用户名：</span>
+            <input type="text" class="userName" id="userName" value=""/><br><br><br>
+            <span class="passwordSpan">密码：</span>
+            <input type="password" class="password" id="password" value=""/><br>
+        <button type="submit" class="button" id="button" style="background: cadetblue">登录</button>
+    </div>
+</form>
+</body>
+<script>
+    $("#button").click(function () {
+        // form表单提交
+        var userName = $("#userName").val();
+        var password = $("#password").val();
+        if (userName == ""){
+            alert("用户名不能为空！");
+            return false;
+        }
+        if (password == ""){
+            alert("密码不能为空！");
+            return false;
+        }
+        var formURL = document.getElementsByTagName("form")[0];
+        <!--给请求的URL后面拼接传给后台的参数-->
+        formURL.action = formURL.action + "?userName=" + userName + "&password=" + password;
+        $("#UserController").submit();
+    });
+</script>
+<script type="text/javascript">
+    /*var userName = $("#userName").val();
+       var password = $("#password").val();
+       if (userName == ""){
+           alert("用户名不能为空！");
+           return false;
+       }
+       if (password == ""){
+           alert("密码不能为空！");
+           return false;
+       }
+       var cmd = {USER_NAE:userName, PASSWORD:password};*/
+    // 写一个ajax请求吧
+    /*$.ajax({
+        url: "/user/index",
+        type: "POST",
+        data : cmd,
+        cache: false,
+        contentType: "application/json; charset=utf-8",
+        dataType: "text",
+        success: function(json) {
+
+            alert("---------"+json);
+        },
+        error:function(e){
+            alert("请求失败");
+        }
+    });*/
+
+</script>
+</html>

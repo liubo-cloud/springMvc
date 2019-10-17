@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AjaxLogin 登录</title>
+</head>
+<body>
+<div id="msg"></div>
+<input type="button" onclick="sendRequest();" value="发送请求">
+<script type="text/javascript">
+    var xmlHttpRequest = null;
+    // 定义创建XmlHttpRequest的函数
+    var createRequest = function () {
+        if (window.XMLHttpRequest){ // 非IE
+            xmlHttpRequest = new XMLHttpRequest();
+        }else {
+            // 创建IE核心的ajax请求对象，IE8,IE7
+            try {
+                xmlHttpRequest = new ActiveXObject("Microsoft.XMLHTTP");
+            }catch (e) { // IE7以下
+                xmlHttpRequest = new ActiveXObject("Msxml2.XMLHTTP");
+            }
+        }
+    };
+    // 创建发送请求的函数
+    var sendRequest = function () {
+        if(xmlHttpRequest == null){
+            // 创建xmlHttpRequest请求对象
+            createRequest();
+        }
+        /*
+            建立连接
+            method: ajax请求方式 GET | POST
+            url：连接请求的资源路径
+            async:默认为true，同步请求改为false
+            username:连接资源的用户名
+            password：连接的资源的用户名密码
+         */
+        //xmlHttpRequest.open(method, url, async, username, password);
+        xmlHttpRequest.open("GET", "login.html", true);
+        // 定义处理请求响应的返回结果
+        xmlHttpRequest.onreadystatechange = callback;
+        // 发送请求
+        xmlHttpRequest.send(null);
+    };
+    // 回调函数
+    var callback = function () {
+        /*  status
+            200 OK
+            400 类型转换问题
+            404 请求资源路径问题
+            500 请求的服务器内部问题
+         */
+        if (xmlHttpRequest.status == 200 && xmlHttpRequest.readyState == 4){
+            // 获取ajax请求结果
+            var result = xmlHttpRequest.responseText;
+            document.getElementById("msg").innerHTML = result;
+        }
+    };
+</script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--定义接口类包名-->
+<mapper namespace="com.spring.demo.mapper.UserMapper">
+    <!--mybatis二级缓存-->
+    <cache type="E:com.spring.demo.common.RedisCache"/>
+    <!-- 返回类型、定义ID-->
+    <resultMap type="com.spring.demo.pojo.User" id="UserModel">
+        <id column="USER_ID" property="USER_ID"/>
+        <result column="USER_ID" property="USER_ID"/>
+        <result column="USER_NAME" property="USER_NAME"/>
+        <result column="USER_SEX" property="USER_SEX"/>
+        <result column="USER_AGE" property="USER_AGE"/>
+        <result column="USER_PHONE" property="USER_PHONE"/>
+        <result column="USER_ADDRESS" property="USER_ADDRESS"/>
+    </resultMap>
+    <!--方法名、入参、返回类型-->
+    <select id = "queryUser" parameterType = "String" resultMap="UserModel">
+        SELECT * FROM USERINFO WHERE USER_ID=#{userId}
+    </select>
+</mapper>
